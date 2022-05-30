@@ -32,11 +32,16 @@ class HasTVars a where
 
 -- | Type variables of a type
 instance HasTVars Type where
-  freeTVars t     = error "TBD: type freeTVars"
+  freeTVars (TVar a) = [a]
+  freeTVars (TList t) = freeTVars t
+  freeTVars (a :=> b) = if (a /= b) then ((freeTVars a) ++ (freeTVars b)) else (freeTVars a)
+  freeTVars _ = []
 
 -- | Free type variables of a poly-type (remove forall-bound vars)
 instance HasTVars Poly where
-  freeTVars s     = error "TBD: poly freeTVars"
+  freeTVars (Mono a)     = freeTVars a
+  freeTVars (Forall t p) = freeTVars p L.\\ [t]
+  freeTVars _ = []
 
 -- | Free type variables of a type environment
 instance HasTVars TypeEnv where
