@@ -128,7 +128,8 @@ extendState (InferState sub n) a t = InferState (extendSubst sub a t) n
 -- | Unify a type variable with a type; 
 --   if successful return an updated state, otherwise throw an error
 unifyTVar :: InferState -> TVar -> Type -> InferState
-unifyTVar st a t = error "TBD: unifyTVar"
+unifyTVar (InferState l n) a (TVar t) = (InferState l n)
+unifyTVar (InferState l n) a t = InferState ((a,t):l) (n+1)
     
 -- | Unify two types;
 --   if successful return an updated state, otherwise throw an error
