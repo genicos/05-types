@@ -79,6 +79,7 @@ instance Substitutable Type where
   apply ((a,b):xs) (TVar c) = if (a == c) then b else apply xs (TVar c)
   apply a (TList t) = TList (apply a t)
   apply a (b :=> c) = (apply a b) :=> (apply a c)
+  apply _ a = a
 
 -- | Apply substitution to poly-type
 instance Substitutable Poly where    
@@ -100,7 +101,7 @@ instance Substitutable TypeEnv where
       
 -- | Extend substitution with a new type assignment
 extendSubst :: Subst -> TVar -> Type -> Subst
-extendSubst sub a t = ((a,t) : helper sub a t)
+extendSubst sub a t = ((a,(apply sub t)) : helper sub a t)
   where
   helper [] a t = []
   helper ((b,c):xs) a t = ((b, (apply [(a,t)] c)) : (helper xs a t))
@@ -129,7 +130,7 @@ extendState (InferState sub n) a t = InferState (extendSubst sub a t) n
 --   if successful return an updated state, otherwise throw an error
 unifyTVar :: InferState -> TVar -> Type -> InferState
 unifyTVar (InferState l n) a (TVar t) = (InferState l n)
-unifyTVar (InferState l n) a t = InferState ((a,t):l) (n+1)
+unifyTVar (InferState l n) a t = if (elem a (freeTVars t)) then (throw (Error ("type error"))) else (InferState ((a,t):l) (n+1))
     
 -- | Unify two types;
 --   if successful return an updated state, otherwise throw an error
