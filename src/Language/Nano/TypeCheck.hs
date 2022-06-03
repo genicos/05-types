@@ -75,11 +75,16 @@ class Substitutable a where
   
 -- | Apply substitution to type
 instance Substitutable Type where  
-  apply [(a,b)] (TList (TVar c)) = if (a == c) then (TList b) else (TList (TVar c))
+  apply [] a = a
+  apply ((a,b):xs) (TVar c) = if (a == c) then b else apply xs (TVar c)
+  apply a (TList t) = TList (apply a t)
+  apply a (b :=> c) = (apply a b) :=> (apply a c)
 
 -- | Apply substitution to poly-type
 instance Substitutable Poly where    
-  apply sub s         = error "TBD: poly apply"
+  apply sub (Mono a) = Mono (apply sub a)
+  apply sub (Forall t p) = (Forall t (apply sub p))
+  
 
 -- | Apply substitution to (all poly-types in) another substitution
 instance Substitutable Subst where  
