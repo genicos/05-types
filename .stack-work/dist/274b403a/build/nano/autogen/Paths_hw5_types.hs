@@ -30,7 +30,7 @@ version = Version [0,1,0,0] []
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
 
 bindir     = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\bin"
-libdir     = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\lib\\x86_64-windows-ghc-8.10.4\\hw5-types-0.1.0.0-HN94zkXcp2FLZXJ4JIMlc9-nano"
+libdir     = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\lib\\x86_64-windows-ghc-8.10.4\\hw5-types-0.1.0.0-4ZOr69HRDxNJMSzamQVT2A-nano"
 dynlibdir  = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\lib\\x86_64-windows-ghc-8.10.4"
 datadir    = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\share\\x86_64-windows-ghc-8.10.4\\hw5-types-0.1.0.0"
 libexecdir = "C:\\Users\\nicoa\\dev\\05-types\\.stack-work\\install\\d19353b6\\libexec\\x86_64-windows-ghc-8.10.4\\hw5-types-0.1.0.0"

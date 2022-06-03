@@ -83,7 +83,7 @@ instance Substitutable Type where
 -- | Apply substitution to poly-type
 instance Substitutable Poly where    
   apply sub (Mono a) = Mono (apply sub a)
-  apply sub (Forall t p) = (Forall t (apply sub p)) 
+  apply sub (Forall t p) = (Forall t p)
   
 
 -- | Apply substitution to (all poly-types in) another substitution
