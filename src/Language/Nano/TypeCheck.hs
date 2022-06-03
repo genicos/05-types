@@ -61,11 +61,13 @@ extendTypeEnv x s gamma = (x,s) : gamma
 -- | Lookup a type variable in a substitution;
 --   if not present, return the variable unchanged
 lookupTVar :: TVar -> Subst -> Type
-lookupTVar a sub = error "TBD: lookupTVar"
+lookupTVar a [] = TVar a
+lookupTVar a ((b, c):xs) = if (a == b) then c else lookupTVar a xs
 
 -- | Remove a type variable from a substitution
 removeTVar :: TVar -> Subst -> Subst
-removeTVar a sub = error "TBD: removeTVar"
+removeTVar a [] = []
+removeTVar a ((b, c):xs) = if (a == b) then (removeTVar a xs) else ((b, c) : (removeTVar a xs))
      
 -- | Things to which type substitutions can be apply
 class Substitutable a where
@@ -73,7 +75,7 @@ class Substitutable a where
   
 -- | Apply substitution to type
 instance Substitutable Type where  
-  apply sub t         = error "TBD: type apply"
+  apply [(a,b)] (TList (TVar c)) = if (a == c) then (TList b) else (TList (TVar c))
 
 -- | Apply substitution to poly-type
 instance Substitutable Poly where    
