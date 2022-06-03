@@ -135,7 +135,12 @@ unifyTVar (InferState l n) a t = if (elem a (freeTVars t)) then (throw (Error ("
 -- | Unify two types;
 --   if successful return an updated state, otherwise throw an error
 unify :: InferState -> Type -> Type -> InferState
-unify st t1 t2 = error "TBD: unify"
+unify st TInt TInt    = st
+unify st TInt TBool   = (throw (Error ("type error: cannot unify Int and Bool")))
+unify st TBool TInt   = (throw (Error ("type error: cannot unify Int and Bool")))
+unify st TBool TBool  = st
+unify (InferState l n) ((TVar a) :=> b) (c :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error")))
+unify (InferState l n) (c :=> b) ((TVar a) :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error")))
 
 --------------------------------------------------------------------------------
 -- Problem 3: Type Inference
