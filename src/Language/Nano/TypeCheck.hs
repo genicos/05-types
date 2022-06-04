@@ -147,6 +147,7 @@ unify (InferState l n) ((TVar a) :=> b) (c :=> d) = if (b == d) then (InferState
 unify (InferState l n) (c :=> b) ((TVar a) :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error2")))
 unify (InferState l n) (TList (TVar a)) (TList b) = (InferState ((a,b):l) (n+1))
 unify (InferState l n) (TList b) (TList (TVar a)) = (InferState ((a,b):l) (n+1))
+unify st _ _ = (throw (Error ("type error")))
 
 
 
