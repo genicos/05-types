@@ -158,7 +158,8 @@ unify st _ _ = (throw (Error ("type error")))
 infer :: InferState -> TypeEnv -> Expr -> (InferState, Type)
 infer st _   (EInt _)          = (st, TInt)
 infer st _   (EBool _)         = (st, TBool)
-infer st gamma (EVar x)        = error "TBD: infer EVar"
+infer st [] (EVar x) = (st, TVar x)
+infer st ((a,Mono b):xs) (EVar x) = if (a == x) then (st, b) else (infer st xs (EVar x))
 infer st gamma (ELam x body)   = error "TBD: infer ELam"
 infer st gamma (EApp e1 e2)    = error "TBD: infer EApp"
 infer st gamma (ELet x e1 e2)  = error "TBD: infer ELet"
