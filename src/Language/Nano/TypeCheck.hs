@@ -139,8 +139,16 @@ unify st TInt TInt    = st
 unify st TInt TBool   = (throw (Error ("type error: cannot unify Int and Bool")))
 unify st TBool TInt   = (throw (Error ("type error: cannot unify Int and Bool")))
 unify st TBool TBool  = st
-unify (InferState l n) ((TVar a) :=> b) (c :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error")))
-unify (InferState l n) (c :=> b) ((TVar a) :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error")))
+unify (InferState l n) (c :=> (TVar b)) ((TVar a) :=> d) = (InferState ((b,d):((a,c):l)) (n+2))
+unify (InferState l n) ((TVar a) :=> d) (c :=> (TVar b)) = (InferState ((b,d):((a,c):l)) (n+2))
+unify (InferState l n) (a :=> d) ((TVar c) :=> (TVar b)) = if (a == d) then (InferState ((c,a):l) (n+2)) else (InferState ((c,a):((b,d):l)) (n+2))
+unify (InferState l n) ((TVar c) :=> (TVar b)) (a :=> d) = if (a == d) then (InferState ((c,a):l) (n+2)) else (InferState ((c,a):((b,d):l)) (n+2))
+unify (InferState l n) ((TVar a) :=> b) (c :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error1")))
+unify (InferState l n) (c :=> b) ((TVar a) :=> d) = if (b == d) then (InferState ((a,c):l) (n+1)) else (throw (Error ("type error2")))
+unify (InferState l n) (TList (TVar a)) (TList b) = (InferState ((a,b):l) (n+1))
+unify (InferState l n) (TList b) (TList (TVar a)) = (InferState ((a,b):l) (n+1))
+
+
 
 --------------------------------------------------------------------------------
 -- Problem 3: Type Inference
